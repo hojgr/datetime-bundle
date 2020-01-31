@@ -19,9 +19,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('tuscanicz_datetime');
+    	$treeBuilder = new TreeBuilder('tuscanicz_datetime');
 
+        // Keep compatibility with symfony/config < 4.2
+        if (\method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root('tuscanicz_datetime');
+        }
+        
         $rootNode
             ->children()
                 ->scalarNode('app_timezone')
